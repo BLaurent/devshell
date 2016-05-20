@@ -1,8 +1,8 @@
 #Build container
 To build the container do :
-  
-  cmake .
-  make shell
+
+    cmake .
+    make shell
 
 Be patient this can be long
 
