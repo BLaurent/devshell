@@ -1,10 +1,15 @@
+#Build container
 
-
+<code>
 cmake .
 make shell
+</code>
 
+Be patient this can be long
+
+#Configure
 Then add to your .bashrc/.zshrc
-
+<code>
 DEVSHELL_CONTAINER_NAME=devshell
 DEVSHELL_TAG="cloudav/devshell"
 
@@ -38,15 +43,20 @@ function shell-join {
   docker exec -ti ${DEVSHELL_CONTAINER_NAME} /bin/zsh
 }
 
+</code>
 
-This assume that you have zsh as a shell,
-vim and antigen installed
+# Pre-Requisite
+This assume that you have zsh as a shell, vim and antigen installed.
+By default you will mount into the container many .XXrc file to have the exact same config in your machine and in your docker container.
 
+#Usage
 
 Open a new shell
 Go to the directory you mount in your container
 type 
+<code>
 shell
+</code>
 
 you should have your shell setup like on your regular machine but this time within a docker container.
 
