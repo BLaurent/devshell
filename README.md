@@ -27,7 +27,6 @@ Then add to your .bashrc/.zshrc
           --net=${netname} \
           -u root:root \
           -v ${HOME}/.ssh:/root/.ssh \
-          -v ${HOME}/.vim:/root/.vim \
           -v ${HOME}/.vimrc:/root/.vimrc \
           -v ${HOME}/.antigen:/root/.antigen \
           -v ${HOME}/.zshrc:/root/.zshrc \
@@ -37,7 +36,7 @@ Then add to your .bashrc/.zshrc
           -it ${DEVSHELL_TAG} /root/startup.sh
       }
       
-      
+        
       function shell-join {
         docker exec -ti ${DEVSHELL_CONTAINER_NAME} /bin/zsh
       }

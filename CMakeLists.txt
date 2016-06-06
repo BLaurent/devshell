@@ -14,18 +14,18 @@ add_custom_target(shell-noproxy
   COMMAND docker build --tag=${DEVSHELL_TAG} .
   WORKING_DIRECTORY ${DEVSHELL_PATH})
 
-add_custom_target(packaging-image-build
+add_custom_target(packaging-devshell
   COMMAND rm -rf package
   COMMAND mkdir -p package/${DEVSHELL_CONTAINER_NAME}
   COMMAND docker run -t ${DEVSHELL_TAG} true
   COMMAND docker cp `docker ps -q -n=1`:/usr/local package/${DEVSHELL_CONTAINER_NAME}
   COMMAND docker rm -f `docker ps -q -n=1`
-  COMMAND docker run -t ubuntu:15.04 true
+  COMMAND docker run -t ubuntu:16.04 true
   COMMAND for i in `ls package/${DEVSHELL_CONTAINER_NAME}/local/`\; do docker cp package/${DEVSHELL_CONTAINER_NAME}/local/$$i `docker ps -q -n=1`:/usr/local/\; done
   COMMAND docker export `docker ps -q -n=1` | docker import - ${TAG_RELEASE}
   COMMAND docker rm -f `docker ps -q -n=1`
   COMMAND docker images | grep ${TAG_RELEASE}
   COMMAND rm -rf package
-  DEPENDS devshell-image-build
+  DEPENDS shell
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 

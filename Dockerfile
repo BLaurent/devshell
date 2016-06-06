@@ -6,9 +6,9 @@ RUN locale-gen "en_US.UTF-8"
 RUN dpkg-reconfigure locales
 RUN apt-get -y -qq clean && apt-get -y -qq update
 
-RUN apt-get -y -qq install vim zsh && chsh -s /usr/bin/zsh
+RUN apt-get -y -qq install zsh && chsh -s /usr/bin/zsh
 
-RUN apt-get -y -qq install openssh-server curl
+RUN apt-get -y -qq install openssh-server curl xz-utils
 RUN echo 'root:pw' | chpasswd
 RUN mkdir /var/run/sshd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -25,7 +25,7 @@ RUN apt-get install ca-certificates && \
   curl http://internet.ge.com/GE_External_Certificate2.pem > GE_External_Certificate2.crt && \
   update-ca-certificates -v
 
-RUN apt-get -y -qq install build-essential g++-4.9 libcorelinux-dev golang libgoogle-glog-dev \
+RUN apt-get -y -qq install build-essential libcorelinux-dev golang libgoogle-glog-dev \
       libboost-system-dev libdouble-conversion-dev libjemalloc-dev libssl-dev libevent-dev libxml-libxml-perl \
       liblzma-dev libjemalloc1 libjemalloc-dev libsodium-dev gdb cgdb valgrind libunwind8 libunwind-dev
 
@@ -47,6 +47,21 @@ RUN pip install --upgrade pip
 RUN pip install virtualenv virtualenvwrapper
 RUN apt-get -y -qq install git google-mock
 
+RUN  cd / && \
+       git clone https://github.com/vim/vim.git && \
+       cd vim && \
+       ./configure --prefix=/usr \
+       --with-features=huge \
+       --enable-multibyte \
+       --enable-rubyinterp \
+       --enable-pythoninterp \
+       --with-python-config-dir=/usr/lib/python2.7/config \
+       --enable-perlinterp \
+       --enable-luainterp \
+       --enable-cscope --prefix=/usr && \
+       make install && \
+       rm -rf vim
+
 ENV CMAKE_VERSION 3.5.1
 RUN curl -LkO https://www.cmake.org/files/v3.5/cmake-$CMAKE_VERSION.tar.gz && \
   tar xfz cmake-$CMAKE_VERSION.tar.gz && \
@@ -57,16 +72,26 @@ RUN curl -LkO https://www.cmake.org/files/v3.5/cmake-$CMAKE_VERSION.tar.gz && \
   cd / && \
   rm -rf cmake*
 
-ENV NVM_DIR $HOME/nvm
+ENV NVM_DIR /root/.nvm
 ENV NODE_VERSION 0.12
 ENV NVM_VERSION 0.31.1
-RUN curl https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | zsh && \
+RUN mkdir -p /root/.nvm && \
+      curl https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | zsh && \
       . $NVM_DIR/nvm.sh && \
       nvm install 0.10 && \
       nvm install 0.12 && \
       nvm install 5 && \
       nvm alias default stable && \
       nvm use default
+
+RUN mkdir -p /root/.vim/bundle && \
+      mkdir -p /root/.vim/colors
+COPY vimrc /root/.vimrc
+COPY inkpot.vim /root/.vim/colors
+RUN . $NVM_DIR/nvm.sh && \
+      git clone https://github.com/VundleVim/Vundle.vim.git /root/.vim/bundle/Vundle.vim && \
+      vim --not-a-term +PluginInstall +qall && \
+      /root/.vim/bundle/YouCompleteMe/install.py --tern-completer --clang-completer --gocode-completer
 
 RUN git clone https://github.com/google/googletest.git && \
       cd googletest && \
@@ -120,7 +145,7 @@ RUN git clone https://github.com/facebook/folly.git && \
       rm -rf /folly
 
 ENV ZEROMQ_VERSION 4.1.4
-RUN wget http://download.zeromq.org/zeromq-$ZEROMQ_VERSION.tar.gz && \
+RUN curl -OLk https://github.com/zeromq/zeromq4-1/releases/download/v$ZEROMQ_VERSION/zeromq-$ZEROMQ_VERSION.tar.gz && \
       tar xf zeromq-$ZEROMQ_VERSION.tar.gz && \
       cd zeromq-$ZEROMQ_VERSION && \
       ./configure && \
