@@ -25,7 +25,7 @@ RUN apt-get install ca-certificates && \
   curl http://internet.ge.com/GE_External_Certificate2.pem > GE_External_Certificate2.crt && \
   update-ca-certificates -v
 
-RUN apt-get -y -qq install build-essential libcorelinux-dev golang libgoogle-glog-dev \
+RUN apt-get -y -qq install build-essential libcorelinux-dev golang \
       libboost-system-dev libdouble-conversion-dev libjemalloc-dev libssl-dev libevent-dev libxml-libxml-perl \
       liblzma-dev libjemalloc1 libjemalloc-dev libsodium-dev gdb cgdb valgrind libunwind8 libunwind-dev
 
@@ -44,7 +44,7 @@ RUN apt-get -y -qq install libc-dev libc6-dev libtool autotools-dev automake pkg
 
 RUN apt-get -y -qq install python libboost1.58-all-dev libboost1.58-all python-pip python3-pip python-all-dev python3-all-dev build-essential libiberty-dev
 RUN pip install --upgrade pip
-RUN pip install virtualenv virtualenvwrapper
+RUN pip install virtualenv virtualenvwrapper pydevd
 RUN apt-get -y -qq install git google-mock
 
 RUN  cd / && \
