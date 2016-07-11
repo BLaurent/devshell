@@ -27,14 +27,15 @@ RUN apt-get install ca-certificates && \
 
 RUN apt-get -y -qq install build-essential libcorelinux-dev golang \
       libboost-system-dev libdouble-conversion-dev libjemalloc-dev libssl-dev libevent-dev libxml-libxml-perl \
-      liblzma-dev libjemalloc1 libjemalloc-dev libsodium-dev gdb cgdb valgrind libunwind8 libunwind-dev
+      liblzma-dev libjemalloc1 libjemalloc-dev libsodium-dev gdb cgdb valgrind libunwind8 libunwind-dev libunwind8-dev \
+      libelf-dev libdwarf-dev libiberty-dev
 
 RUN apt-get -y -qq install clang-3.8 libc++abi1 libc++1 libc++abi-dev libc++-dev
-RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.8 100
-RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
+#RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.8 100
+#RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886  && \
-  echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu vivid main" | tee /etc/apt/sources.list.d/webupd8team-java.list && \
+  echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list && \
   apt-get update -qq -y && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
   echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections && \
@@ -42,7 +43,7 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886  && \
 
 RUN apt-get -y -qq install libc-dev libc6-dev libtool autotools-dev automake pkg-config
 
-RUN apt-get -y -qq install python libboost1.58-all-dev libboost1.58-all python-pip python3-pip python-all-dev python3-all-dev build-essential libiberty-dev
+RUN apt-get -y -qq install python libboost1.58-all-dev libboost1.58-all python-pip python3-pip python-all-dev python3-all-dev build-essential
 RUN pip install --upgrade pip
 RUN pip install virtualenv virtualenvwrapper pydevd
 RUN apt-get -y -qq install git google-mock
