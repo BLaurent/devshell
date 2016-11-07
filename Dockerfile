@@ -21,8 +21,8 @@ RUN apt-get install ca-certificates && \
   cd /usr/local/share/ca-certificates && \
   mkdir ge && \
   cd ge && \
-  curl http://internet.ge.com/GE_External_Certificate1.pem > GE_External_Certificate1.crt && \
-  curl http://internet.ge.com/GE_External_Certificate2.pem > GE_External_Certificate2.crt && \
+  curl https://static.gecirtnotification.com/browser_remediation/packages/GE_External_Certificate1.cer > GE_External_Certificate1.cer && \
+  curl https://static.gecirtnotification.com/browser_remediation/packages/GE_External_Certificate2.cer > GE_External_Certificate2.cer && \
   update-ca-certificates -v
 
 RUN apt-get -y -qq install build-essential libcorelinux-dev golang \
@@ -34,7 +34,7 @@ RUN apt-get -y -qq install clang-3.8 libc++abi1 libc++1 libc++abi-dev libc++-dev
 #RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.8 100
 #RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100
 
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv EEA14886  && \
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EEA14886  && \
   echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main" | tee /etc/apt/sources.list.d/webupd8team-java.list && \
   apt-get update -qq -y && \
   echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
@@ -74,14 +74,14 @@ RUN curl -LkO https://www.cmake.org/files/v3.5/cmake-$CMAKE_VERSION.tar.gz && \
   rm -rf cmake*
 
 ENV NVM_DIR /root/.nvm
-ENV NODE_VERSION 0.12
-ENV NVM_VERSION 0.31.1
+ENV NODE_VERSION 7.0
+ENV NVM_VERSION 0.32.1
 RUN mkdir -p /root/.nvm && \
       curl https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | zsh && \
       . $NVM_DIR/nvm.sh && \
-      nvm install 0.10 && \
       nvm install 0.12 && \
-      nvm install 5 && \
+      nvm install 6 && \
+      nvm install 7 && \
       nvm alias default stable && \
       nvm use default
 
