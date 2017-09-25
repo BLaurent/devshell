@@ -7,7 +7,9 @@ To build the container do :
 Be patient this can be long
 
 #Configure
-Then add to your .bashrc/.zshrc
+Then add to your __.bashrc/.zshrc__
+
+
     DEVSHELL_CONTAINER_NAME=devshell
     DEVSHELL_VERSION=latest
     DEVSHELL_TAG="blaurent/devshell:${DEVSHELL_VERSION}"
