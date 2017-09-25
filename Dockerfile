@@ -1,12 +1,10 @@
 FROM ubuntu:16.04
 
 ENV DEBIAN_FRONTEND noninteractive
-
+RUN apt-get -y -qq clean && apt-get -y -qq update
+RUN apt-get -y -qq install locales zsh && chsh -s /usr/bin/zsh
 RUN locale-gen "en_US.UTF-8"
 RUN dpkg-reconfigure locales
-RUN apt-get -y -qq clean && apt-get -y -qq update
-
-RUN apt-get -y -qq install zsh && chsh -s /usr/bin/zsh
 
 RUN apt-get -y -qq install openssh-server curl xz-utils
 RUN echo 'root:pw' | chpasswd
