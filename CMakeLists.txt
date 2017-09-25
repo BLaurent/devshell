@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 SET(DEVSHELL_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-SET(DEVSHELL_TAG "cloudav/devshell")
+SET(DEVSHELL_TAG "blaurent/devshell")
 SET(DEVSHELL_CONTAINER_NAME devshell)
-SET(TAG_RELEASE "cloudav/devshell-package")
+SET(TAG_RELEASE "blaurent/devshell-package")
 SET(no_proxy *.grc-apps.svc.ice.ge.com,predix.io,gecis.io,lattice.dev,*.dev,3.*,192.*,127.*,localhost,0.0.0.*)
 SET(build_args --build-arg "http_proxy=$ENV{http_proxy}" --build-arg "https_proxy=$ENV{https_proxy}" --build-arg "no_proxy=$ENV{no_proxy}" )
 
